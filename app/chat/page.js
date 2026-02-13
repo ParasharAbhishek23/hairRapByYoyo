@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import AIChatbot from '@/components/ai-chatbot'
+import ChatInterface from "@/components/chat-interface";
 
 export default function ChatPage() {
-  return <AIChatbot />
+  return <ChatInterface />;
 }

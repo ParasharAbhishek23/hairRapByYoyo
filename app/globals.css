@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -12,69 +12,69 @@
 
 @layer base {
   :root {
-    /* Primary: Deep Charcoal - Professional and elegant */
+    /* Primary: Dark Gray/Charcoal - Professional */
     --primary: 215 28% 17%;
     --primary-foreground: 0 0% 100%;
-    
-    /* Secondary: Warm Gold - Accent and highlights */
+
+    /* Secondary: Warm Gold - Accent */
     --secondary: 39 89% 47%;
     --secondary-foreground: 0 0% 100%;
-    
-    /* Background: Off-white - Clean and modern */
-    --background: 0 0% 98%;
+
+    /* Accent: Mauve/Pink - Main CTA and highlights */
+    --accent: 346 76% 59%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Background: Light Gray/Off-white */
+    --background: 240 10% 97%;
     --foreground: 215 28% 17%;
-    
-    /* Card: White with subtle contrast */
+
+    /* Card: White */
     --card: 0 0% 100%;
     --card-foreground: 215 28% 17%;
-    
-    /* Popover: Light background */
+
+    /* Popover: White */
     --popover: 0 0% 100%;
     --popover-foreground: 215 28% 17%;
-    
-    /* Accent: Rose/Pink - For CTAs and highlights */
-    --accent: 346 100% 55%;
-    --accent-foreground: 0 0% 100%;
-    
-    /* Muted: Neutral gray */
-    --muted: 215 14% 88%;
+
+    /* Muted: Light Gray */
+    --muted: 240 10% 90%;
     --muted-foreground: 215 8% 44%;
-    
-    /* Destructive: Red for alerts */
+
+    /* Border: Light Gray */
+    --border: 240 10% 90%;
+    --input: 240 10% 90%;
+    --ring: 346 76% 59%;
+
+    /* Destructive: Red */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    
-    /* Border and Input: Light gray */
-    --border: 215 14% 88%;
-    --input: 215 14% 88%;
-    --ring: 346 100% 55%;
-    
+
     /* Chart colors */
-    --chart-1: 346 100% 55%;
+    --chart-1: 346 76% 59%;
     --chart-2: 39 89% 47%;
     --chart-3: 215 28% 17%;
     --chart-4: 198 93% 60%;
     --chart-5: 346 100% 70%;
-    
-    /* Spacing radius */
+
+    /* Radius */
     --radius: 0.75rem;
-    
+
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 215 28% 17%;
     --sidebar-primary: 215 28% 17%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 346 100% 55%;
+    --sidebar-accent: 346 76% 59%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 215 14% 88%;
-    --sidebar-ring: 346 100% 55%;
+    --sidebar-border: 240 10% 90%;
+    --sidebar-ring: 346 76% 59%;
   }
-  
+
   .dark {
     /* Dark mode colors */
     --primary: 39 89% 47%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 346 100% 55%;
+    --secondary: 346 76% 59%;
     --secondary-foreground: 0 0% 100%;
     --background: 215 28% 13%;
     --foreground: 0 0% 98%;
@@ -82,7 +82,7 @@
     --card-foreground: 0 0% 98%;
     --popover: 215 20% 18%;
     --popover-foreground: 0 0% 98%;
-    --accent: 346 100% 55%;
+    --accent: 346 76% 59%;
     --accent-foreground: 0 0% 100%;
     --muted: 215 20% 28%;
     --muted-foreground: 215 12% 65%;
@@ -90,8 +90,8 @@
     --destructive-foreground: 0 0% 98%;
     --border: 215 20% 28%;
     --input: 215 20% 28%;
-    --ring: 346 100% 55%;
-    --chart-1: 346 100% 55%;
+    --ring: 346 76% 59%;
+    --chart-1: 346 76% 59%;
     --chart-2: 39 89% 47%;
     --chart-3: 198 93% 60%;
     --chart-4: 39 89% 47%;
@@ -100,10 +100,10 @@
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 39 89% 47%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 346 100% 55%;
+    --sidebar-accent: 346 76% 59%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 215 20% 28%;
-    --sidebar-ring: 346 100% 55%;
+    --sidebar-ring: 346 76% 59%;
   }
 }
 
@@ -111,14 +111,27 @@
   * {
     @apply border-border;
   }
-  
+
   body {
     @apply bg-background text-foreground;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Playfair Display", serif;
     font-weight: 700;
+  }
+
+  a {
+    @apply transition-colors;
+  }
+
+  button {
+    @apply transition-all;
   }
 }
