@@ -165,64 +165,20 @@ export default function ChatInterface() {
 
   return (
     <div className="flex h-screen bg-background">
-      {/* Sidebar - Only Chat History */}
-      <div className="w-64 bg-white border-r border-border flex flex-col">
-        {/* Chat History - Scrollable */}
-        <div className="flex-1 overflow-y-auto p-4">
-          <h3 className="text-xs font-semibold text-muted-foreground px-2 py-1 mb-3">
-            Chat History
-          </h3>
-          <div className="text-xs text-muted-foreground px-3 py-2 mb-3">Today</div>
-
-          {/* Actual Chat History */}
-          {messages.slice(1).map((msg, idx) => (
-            <div
-              key={idx}
-              onClick={() => {
-                // Scroll to this message
-                const element = document.getElementById(`message-${msg.id}`)
-                element?.scrollIntoView({ behavior: 'smooth' })
-              }}
-              className="px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-50 transition mb-2"
-            >
-              <div className="font-semibold text-sm truncate">
-                {msg.sender === 'user' ? 'You' : 'AI Assistant'}
-              </div>
-              <div className="text-xs text-muted-foreground truncate">
-                {msg.text}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Bottom Fixed Buttons */}
-        <div className="border-t border-border p-3 space-y-2">
-          <button className="w-full flex items-center gap-2 bg-background px-3 py-2 rounded-lg hover:bg-gray-50 transition text-sm font-medium">
-            <Plus className="w-4 h-4" />
-            New Chat
-          </button>
-          <div className="flex gap-2">
-            <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium hover:bg-gray-50 rounded-lg transition">
-              <Settings className="w-4 h-4" />
-              Settings
-            </button>
-            <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium hover:bg-gray-50 rounded-lg transition">
-              <User className="w-4 h-4" />
-              Profile
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Chat Area */}
+      {/* Main Chat Area - Full Width */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <div className="bg-white border-b border-border px-4 sm:px-8 py-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-foreground">
             Hey! How can I assist you today?
           </h1>
-          <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white font-bold">
-            U
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-100 rounded-lg transition">
+              <Settings className="w-5 h-5 text-muted-foreground" />
+            </button>
+            <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white font-bold">
+              U
+            </div>
           </div>
         </div>
 
@@ -274,57 +230,72 @@ export default function ChatInterface() {
           )}
 
           {/* Chat Messages */}
-          {messages.slice(1).map((msg) => (
-            <div
-              key={msg.id}
-              id={`message-${msg.id}`}
-              className={`flex mb-6 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
-              {msg.sender === 'bot' && (
-                <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white font-bold text-sm mr-3 flex-shrink-0">
-                  AI
+          {messages.length > 1 && (
+            <div className="max-w-3xl mx-auto space-y-4">
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  id={`message-${msg.id}`}
+                  className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl ${
+                      msg.sender === "user"
+                        ? "bg-accent text-white rounded-br-none"
+                        : "bg-white text-foreground border border-border rounded-bl-none"
+                    }`}
+                  >
+                    <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
+                    
+                    {/* Quick Actions */}
+                    {msg.quickActions && msg.quickActions.length > 0 && (
+                      <div className="mt-3 space-y-2">
+                        {msg.quickActions.map((action, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleQuickAction(action)}
+                            className="w-full text-left px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs transition"
+                          >
+                            {action}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
-              <div
-                className={`max-w-lg px-4 py-3 rounded-2xl ${
-                  msg.sender === 'user'
-                    ? 'bg-accent text-white'
-                    : 'bg-gray-100 text-gray-900'
-                }`}
-              >
-                {msg.quickActions ? (
-                  <div>
-                    <p className="mb-3">{msg.text}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {msg.quickActions.map((action, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleSendMessage(action)}
-                          className="px-3 py-1 bg-white border border-gray-300 rounded-lg text-sm hover:bg-gray-50 transition"
-                        >
-                          {action}
-                        </button>
-                      ))}
+              ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-white border border-border px-4 py-3 rounded-2xl rounded-bl-none">
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
+                      <div
+                        className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
+                        style={{ animationDelay: "0.2s" }}
+                      ></div>
+                      <div
+                        className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
+                        style={{ animationDelay: "0.4s" }}
+                      ></div>
                     </div>
                   </div>
-                ) : (
-                  <p>{msg.text}</p>
-                )}
-              </div>
-              {msg.sender === 'user' && (
-                <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white font-bold text-sm ml-3 flex-shrink-0">
-                  U
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
-          ))}
-          <div ref={messagesEndRef} />
+          )}
         </div>
 
-        {/* Fixed Input Box at Bottom */}
-        <div className="border-t border-border bg-white p-4">
-          <div className="flex gap-3">
-            <div className="flex-1 relative">
+        {/* Input Area */}
+        <div className="bg-white border-t border-border px-4 sm:px-8 py-6">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-xs text-muted-foreground mb-3">
+              Browse help topics
+            </div>
+            <div className="flex items-center gap-2 bg-background border border-border rounded-full px-4 py-3">
+              <button className="p-2 hover:bg-gray-100 rounded-full transition text-muted-foreground">
+                <Plus className="w-5 h-5" />
+              </button>
               <input
                 type="text"
                 value={inputValue}
@@ -336,27 +307,22 @@ export default function ChatInterface() {
                   }
                 }}
                 placeholder="Ask me anything..."
-                className="w-full px-4 py-3 pr-12 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-                disabled={isLoading}
+                className="flex-1 bg-transparent outline-none text-foreground placeholder-muted-foreground"
               />
               <button
-                type="button"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 hover:bg-gray-100 rounded-lg transition"
+                onClick={() => handleSendMessage(inputValue)}
+                disabled={!inputValue.trim() || isLoading}
+                className="p-2 hover:bg-gray-100 rounded-full transition disabled:opacity-50 disabled:cursor-not-allowed text-muted-foreground"
               >
-                <Mic className="w-5 h-5 text-muted-foreground" />
+                <Send className="w-5 h-5" />
+              </button>
+              <button className="p-2 hover:bg-gray-100 rounded-full transition text-muted-foreground">
+                <Mic className="w-5 h-5" />
+              </button>
+              <button className="p-2 hover:bg-gray-100 rounded-full transition text-muted-foreground">
+                <Volume2 className="w-5 h-5" />
               </button>
             </div>
-            <button
-              onClick={() => handleSendMessage(inputValue)}
-              disabled={!inputValue.trim() || isLoading}
-              className="bg-accent text-white p-3 rounded-lg hover:bg-opacity-90 transition disabled:opacity-50"
-            >
-              {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <Send className="w-5 h-5" />
-              )}
-            </button>
           </div>
         </div>
       </div>
