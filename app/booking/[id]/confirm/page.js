@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "../../../../components/ui/Input";
+import { sampleServices } from "@/data/sample-services";
 
 export default function BookingConfirmPage() {
   const router = useRouter();
@@ -36,16 +37,16 @@ export default function BookingConfirmPage() {
     notes: "",
   });
 
-  const service = {
+  const service = sampleServices.find(s => s.id === parseInt(id)) || {
     id,
-    name: "Hair Color",
-    price: 499,
-    originalPrice: 699,
-    duration: 45,
-    salon: "Glow & Glam Studio",
-    location: "Maryland City, MD, USA",
-    rating: 4.9,
-    image: "/services/salon-1.jpg",
+    name: "Service Not Found",
+    price: 0,
+    originalPrice: 0,
+    duration: 0,
+    salon: "Unknown",
+    location: "Unknown",
+    rating: 0,
+    image: "/services/default.jpg",
   };
 
   const getDateString = () => {
@@ -74,6 +75,38 @@ export default function BookingConfirmPage() {
       alert("Please fill in all required fields");
       return;
     }
+    
+    // Create booking object
+    const newBooking = {
+      id: Date.now(), // Unique ID based on timestamp
+      serviceId: parseInt(id),
+      serviceName: service.name,
+      salon: service.salon,
+      location: service.location,
+      price: service.price,
+      date: selectedDate,
+      time: selectedTime,
+      duration: service.duration,
+      status: "confirmed",
+      bookingDate: new Date().toISOString().split('T')[0],
+      customerDetails: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        notes: formData.notes
+      }
+    };
+    
+    // Get existing bookings from localStorage
+    const existingBookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    
+    // Add new booking
+    existingBookings.push(newBooking);
+    
+    // Save to localStorage
+    localStorage.setItem('bookings', JSON.stringify(existingBookings));
+    
     setIsBooked(true);
   };
 

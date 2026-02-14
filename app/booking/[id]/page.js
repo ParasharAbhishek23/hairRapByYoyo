@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useParams } from "next/navigation";
+import { sampleServices } from "@/data/sample-services";
 
 export default function BookingPage() {
   const router = useRouter();
@@ -23,17 +24,17 @@ export default function BookingPage() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
 
-  const service = {
+  const service = sampleServices.find(s => s.id === parseInt(id)) || {
     id,
-    name: "Hair Color",
-    price: 499,
-    originalPrice: 699,
-    duration: 45,
-    salon: "Glow & Glam Studio",
-    location: "Maryland City, MD, USA",
-    rating: 4.9,
-    image: "/services/salon-1.jpg",
-    description: "Professional hair coloring service with expert stylists",
+    name: "Service Not Found",
+    price: 0,
+    originalPrice: 0,
+    duration: 0,
+    salon: "Unknown",
+    location: "Unknown",
+    rating: 0,
+    image: "/services/default.jpg",
+    description: "Service details not available",
   };
 
   const timeSlots = [

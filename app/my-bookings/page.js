@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { useEffect } from "react";
 import {
   Calendar,
   Clock,
@@ -15,7 +16,16 @@ import {
 
 export default function MyBookingsPage() {
   const [activeTab, setActiveTab] = React.useState("upcoming");
-  const [bookings, setBookings] = React.useState([
+  const [bookings, setBookings] = React.useState([]);
+  
+  // Load bookings from localStorage on component mount
+  useEffect(() => {
+    const savedBookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    setBookings(savedBookings);
+  }, []);
+
+  // Sample bookings for demonstration (will be replaced by localStorage data)
+  const sampleBookings = [
     {
       id: 1,
       serviceId: 1,
@@ -55,17 +65,22 @@ export default function MyBookingsPage() {
       status: "completed",
       bookingDate: "2024-02-15",
     },
-  ]);
+  ];
 
-  const upcomingBookings = bookings.filter(
+  // Use sample bookings if no saved bookings exist
+  const displayBookings = bookings.length > 0 ? bookings : sampleBookings;
+
+  const upcomingBookings = displayBookings.filter(
     (b) => b.status === "confirmed" || b.status === "pending",
   );
-  const completedBookings = bookings.filter((b) => b.status === "completed");
+  const completedBookings = displayBookings.filter((b) => b.status === "completed");
 
   const handleCancel = (id) => {
-    setBookings(
-      bookings.map((b) => (b.id === id ? { ...b, status: "cancelled" } : b)),
+    const updatedBookings = displayBookings.map((b) => 
+      b.id === id ? { ...b, status: "cancelled" } : b
     );
+    setBookings(updatedBookings);
+    localStorage.setItem('bookings', JSON.stringify(updatedBookings));
   };
 
   const formatDate = (dateStr) => {
